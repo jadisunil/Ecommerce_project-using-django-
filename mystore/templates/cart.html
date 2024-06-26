@@ -1,0 +1,56 @@
+{% comment %} {% extends "theme.html" %} {% block main %}
+<div class="container">
+  <div class="row m-5">
+    <div class="col-lg-8 mx-auto">
+      <div class="border shadow p-4">
+        <h1 class="text-center">Shopping Cart</h1>
+        {% if cart_items %}
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cart_items_with_totals %}
+            <tr>
+              <td>{{ item.item.product.name }}</td>
+              <td>{{ item.item.quantity }}</td>
+              <td>{{ item.item.product.price }}</td>
+              <td>{{ item.total}}</td>
+              <td>
+                <form
+                  method="post"
+                  action="{% url 'remove_from_cart' item.item.id %}"
+                >
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-outline-danger">
+                    Remove
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="text-end">
+          <h4>Total Price: {{ total_price }}</h4>
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center" role="alert">
+          Your cart is empty.
+        </div>
+        {% endif %}
+        <div class="text-center mt-3">
+          <a href="/" class="btn btn-outline-dark">Continue Shopping</a>
+          <button class="btn btn-outline-success">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% endcomment %}
